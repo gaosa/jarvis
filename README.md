@@ -1,2 +1,1 @@
-# jarvis
-MCDS Capstone Project
+![J.A.R.V.I.S. Logo](/logo.svg)
