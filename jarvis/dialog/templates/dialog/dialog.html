@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load static %}
+<script src="{% static "dialog/script/vue.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "dialog/css/dialog.css" %}" />
+<script src="{% static "dialog/script/vega@5.js" %}"></script>
+<script src="{% static "dialog/script/vega-lite@3.js" %}"></script>
+<script src="{% static "dialog/script/vega-embed@4.js" %}"></script>
+
+</head>
+<body>
+
+<div class="container" id="app">
+    <img src="{% static "dialog/img/logo.svg" %}" alt="Logo" />
+    <div v-for="(r, i) in records">
+        <div v-if="r[0] === 'Q'"><p><b>[[ r[1] ]]</b></p></div>
+        <div v-else-if="r[0] === 'A'"><p>[[ r[1] ]]</p></div>
+        <div v-else v-bind:id="i"></div>
+    </div>
+    <!-- <p><b>Hello there! What can I do for you?</b></p>
+    <p>> Give me a graph!</p>
+    <p><b>This is the graph I generated:</b></p>
+    <div id="vis"></div>
+    <p><b>What else can I do for you?</b></p>
+    <p><b>Hello there! What can I do for you?</b></p>
+    <p>> Give me a graph!</p>
+    <p><b>This is the graph I generated:</b></p>
+    <p><b>What else can I do for you?</b></p>
+    <p><b>Hello there! What can I do for you?</b></p>
+    <p>> Give me a graph!</p>
+    <p><b>This is the graph I generated:</b></p>
+    <p><b>What else can I do for you?</b></p> -->
+    <textarea v-model="command" rows="4"></textarea>
+</div>
+
+<script src="{% static "dialog/script/dialog.js" %}"></script>
+
+</body>
+</html>
