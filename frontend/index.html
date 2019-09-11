@@ -2,6 +2,11 @@
 <html>
 <head>
 <script src="vue.js"></script>
+<!-- Import Vega 5 & Vega-Lite 3 (does not have to be from CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+<script src="https://cdn.jsdelivr.net/npm/vega-lite@3"></script>
+<!-- Import vega-embed -->
+<script src="https://cdn.jsdelivr.net/npm/vega-embed@4"></script>
 <style>
     .container {
         width: 50%;
@@ -10,6 +15,7 @@
         margin-left: auto;
         margin-right: auto;
         padding-top: 30px;
+        padding-bottom: 30px;
     }
     body {
         font-family: "Courier New", Courier, monospace;
@@ -41,7 +47,7 @@
     <p><b>Hello there! What can I do for you?</b></p>
     <p>> Give me a graph!</p>
     <p><b>This is the graph I generated:</b></p>
-    <iframe src="sample.html"></iframe>
+    <div id="vis"></div>
     <p><b>What else can I do for you?</b></p>
     <p><b>Hello there! What can I do for you?</b></p>
     <p>> Give me a graph!</p>
@@ -61,9 +67,31 @@
 var app = new Vue({
   el: '#app',
   data: {
-    command: '> Hello Vue!'
+    command: '> '
+  },
+  watch: {
+    'command': function(val, oldVal) {
+      val = val.trimLeft();
+      if (val.length == 0) {
+        this.command = '> ';
+      } else if (val.length == 1) {
+        if (val[0] === '>') this.command = '> ';
+        else this.command = '> ' + val;
+      } else {
+        if (val[0] !== '>') this.command = '> ' + val;
+        else if (val[1] === ' ') this.command = val;
+        else this.command = '> ' + val.substr(1);
+      }
+    }
   }
 })
+</script>
+
+<script type="text/javascript">
+  var spec = "data.json";
+  vegaEmbed('#vis', spec).then(function(result) {
+    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+  }).catch(console.error);
 </script>
 
 </body>
