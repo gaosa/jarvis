@@ -3,11 +3,33 @@ var app = new Vue({
     el: '#app',
     data: {
         command: '> ',
-        records: [
-            ['Q', 'How you doing?'],
-            ['A', 'I am quite well'],
-            ['E']
-        ]
+        records: [],
+        to_render: []
+    },
+    mounted: function () {
+        let records = JSON.parse(document.currentScript.getAttribute('records'));
+        for (let i = 0; i < records.length; ++i) {
+            this.add_record(i, records[i]);
+        }
+    },
+    updated: function() {
+        for (let i = 0; i < this.to_render.length; ++i) {
+            vegaEmbed('#'+this.to_render[i][0], this.to_render[i][1]);
+        }
+        this.to_render = [];
+    },
+    methods: {
+        add_record: function (i, record) {
+            if (record[0] === 'G') {
+                record.push('vis' + i);
+            } else if (record[0] === 'A') {
+                record[1] = '> ' + record[1];
+            }
+            this.records.push(record);
+            if (record[0] === 'G') {
+                this.to_render.push([record[2], record[1]]);
+            }
+        }
     },
     watch: {
         'command': function(val, oldVal) {
@@ -25,14 +47,3 @@ var app = new Vue({
         }
     }
 });
-
-// function draw(id, jsonUrl) {
-//     vegaEmbed(id, jsonUrl).then(function(result) {
-//         // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-//     }).catch(console.error);
-// }
-
-// var spec = "data.json";
-// vegaEmbed('#vis', spec).then(function(result) {
-//     // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-// }).catch(console.error);
