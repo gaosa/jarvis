@@ -14,3 +14,7 @@ and outputs graphs in an interactive fashion.
 
 - [ ] User should be able to append new commands.
 - [ ] Set up a server to serve the website.
+
+# Documents
+
+[Assessment (Internal use)](https://docs.google.com/document/d/1YfLu36lttSDGHPvBewvkVK_kMoSE26G0RqT7jdFQHOc/edit?usp=sharing)
