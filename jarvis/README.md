@@ -1,5 +1,7 @@
 # How to start
 
+First, please install [Django](https://docs.djangoproject.com/en/2.2/topics/install/).
+
 ```bash
 # 1. Clone this repository
 git clone https://github.com/gaosa/jarvis.git
@@ -44,3 +46,5 @@ http://localhost:8000/1/
 ```
 
 You will see some results!
+
+You can then type in some commands after `>` and hit `Enter`. Currently your command will be stored, but no response will be provided. Sorry about that... Still developing!
