@@ -4,10 +4,15 @@ var app = new Vue({
     data: {
         command: '> ',
         records: [],
-        to_render: []
+        to_render: [],
+        dialog_id: -1,
+        current_url: "",
     },
     mounted: function () {
-        let records = JSON.parse(document.currentScript.getAttribute('records'));
+        let data = JSON.parse(document.currentScript.getAttribute('data'));
+        let records = data.records;
+        this.dialog_id = data.dialog_id;
+        this.current_url = data.current_url;
         for (let i = 0; i < records.length; ++i) {
             this.add_record(i, records[i]);
         }
@@ -29,6 +34,17 @@ var app = new Vue({
             if (record[0] === 'G') {
                 this.to_render.push([record[2], record[1]]);
             }
+        },
+        sendCommand: function() {
+            let that = this;
+            axios.post(this.current_url, {
+                'command': this.command.trimRight().substring(2)
+            }).then(function (response) {
+                for (let i = 0; i < response.data.new_records.length; ++i) {
+                    that.add_record(i, response.data.new_records[i]);
+                }
+            });
+            this.command = '';
         }
     },
     watch: {

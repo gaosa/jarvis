@@ -7,6 +7,7 @@
 <script src="{% static "dialog/script/vega@5.js" %}"></script>
 <script src="{% static "dialog/script/vega-lite@3.js" %}"></script>
 <script src="{% static "dialog/script/vega-embed@4.js" %}"></script>
+<script src="{% static "dialog/script/axios.min.js" %}"></script>
 
 </head>
 <body>
@@ -18,9 +19,9 @@
         <div v-else-if="r[0] === 'A'"><p>[[ r[1] ]]</p></div>
         <div v-else v-bind:id="r[2]"></div>
     </div>
-    <textarea v-model="command" rows="4"></textarea>
+    <textarea v-model="command" rows="4" @keyup.enter.exact="sendCommand()"></textarea>
 </div>
-<script src="{% static "dialog/script/dialog.js" %}" records="{{ records }}"></script>
+<script src="{% static "dialog/script/dialog.js" %}" data="{{ data }}"></script>
 
 </body>
 </html>
