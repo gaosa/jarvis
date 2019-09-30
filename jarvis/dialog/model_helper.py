@@ -23,6 +23,14 @@ def append_command(dialog_id, command):
     Record.objects.create(dialog=Dialog.objects.get(id=dialog_id), record_type='A', content=command)
 
 
+def append_query(dialog_id, query):
+    Record.objects.create(dialog=Dialog.objects.get(id=dialog_id), record_type='Q', content=query)
+
+
+def append_graph(dialog_id, graph):
+    Record.objects.create(dialog=Dialog.objects.get(id=dialog_id), record_type='G', content=graph)
+
+
 def get_json(json_id):
     return JSON.loads(Record.objects.get(id=json_id).content)
 

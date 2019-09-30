@@ -47,4 +47,4 @@ http://localhost:8000/1/
 
 You will see some results!
 
-You can then type in some commands after `>` and hit `Enter`. Currently your command will be stored, but no response will be provided. Sorry about that... Still developing!
+You can then type in some commands after `>` and hit `Enter`. Currently your command will be stored, and some fake results will be provided.
