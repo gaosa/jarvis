@@ -37,3 +37,7 @@ def get_json(json_id):
 
 def get_max_record_id(dialog_id):
     return Dialog.objects.get(id=dialog_id).record_set.aggregate(Max('id'))['id__max']
+
+
+def create_dialog():
+    return Dialog.objects.create().id
