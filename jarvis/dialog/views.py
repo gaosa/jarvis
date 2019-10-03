@@ -1,3 +1,4 @@
+from django.core.files.storage import default_storage
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render
 from django.urls import reverse
@@ -5,9 +6,33 @@ from django.views.decorators.csrf import csrf_exempt
 from . import model_helper as MH
 from . import query_answer as QA
 import json as JSON
+import pandas as pd
 
+
+@csrf_exempt
 def index(request):
-    return HttpResponse("Hello, please specify the dialog id.")
+    if request.method == 'GET':
+        return render(request, 'dialog/index.html', {
+                "data": JSON.dumps({
+                    "url": reverse('index'),
+                })
+        })
+    else:
+        df = None
+        f = request.FILES['fileName']
+        default_storage.save(f.name, f)
+        try:
+            df = pd.read_csv(default_storage.path(f.name))
+        except Exception as e:
+            return JsonResponse({
+                'msg': str(e)
+            })
+        dialog_id = MH.create_dialog()
+        df.to_pickle(default_storage.path(str(dialog_id)))
+        MH.append_query(dialog_id, 'Hi there! What can I do for you?')
+        return JsonResponse({
+            'url': str(dialog_id)
+        })
 
 
 @csrf_exempt

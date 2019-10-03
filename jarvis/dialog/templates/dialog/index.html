@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+{% load static %}
+<script src="{% static "dialog/script/vue.js" %}"></script>
+<link rel="stylesheet" type="text/css" href="{% static "dialog/css/dialog.css" %}" />
+<script src="{% static "dialog/script/axios.min.js" %}"></script>
+
+</head>
+<body>
+
+<div class="container" id="app">
+    <img src="{% static "dialog/img/logo.svg" %}" alt="Logo" />
+    <input type="file" name="fileName" @change="upload($event.target.name, $event.target.files)"/>
+    <br />
+    <p style="color: red">[[ msg ]]</p>
+</div>
+
+<script src="{% static "dialog/script/index.js" %}" data="{{ data }}"></script>
+
+</body>
+</html>
