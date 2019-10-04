@@ -41,3 +41,17 @@ def get_max_record_id(dialog_id):
 
 def create_dialog():
     return Dialog.objects.create().id
+
+
+def get_latest_graph_json_str(dialog_id):
+    return Record.objects.filter(dialog__id=2, record_type='G').order_by('-id')[0].content
+
+
+def get_param_dict(dialog_id):
+    return JSON.loads(Dialog.objects.get(id=dialog_id).paramDictString)
+
+
+def set_param_dict(dialog_id, paramDict):
+    dialog = Dialog.objects.get(id=dialog_id)
+    dialog.paramDictString = JSON.dumps(paramDict)
+    dialog.save()

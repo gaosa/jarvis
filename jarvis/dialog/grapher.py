@@ -1,2 +1,17 @@
-def getJsonString():
-    return '{"config": {"view": {"width": 400, "height": 300}, "mark": {"tooltip": null}}, "data": {"url": "https://vega.github.io/vega-datasets/data/cars.json"}, "mark": "point", "encoding": {"color": {"type": "nominal", "field": "Origin"}, "x": {"type": "quantitative", "field": "Horsepower"}, "y": {"type": "quantitative", "field": "Miles_per_Gallon"}}, "selection": {"selector002": {"type": "interval", "bind": "scales", "encodings": ["x", "y"]}}, "$schema": "https://vega.github.io/schema/vega-lite/v3.4.0.json"}'
+import altair as alt
+from . import model_helper as MH
+from vega_datasets import data
+
+
+def draw(df, commandDict, chart = None):
+    chart = alt.Chart(data.cars.url).mark_point().encode(
+        x='Horsepower:Q',
+        y='Miles_per_Gallon:Q',
+        color='Origin:N'
+    ).interactive()
+    return (chart, '')
+
+
+def load(json_str):
+    return alt.Chart.from_json(json_str)
+
