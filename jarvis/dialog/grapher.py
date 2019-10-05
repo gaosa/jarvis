@@ -1,15 +1,19 @@
 import altair as alt
 from . import model_helper as MH
-from vega_datasets import data
+from django.core.files.storage import default_storage
 
 
-def draw(df, commandDict, chart = None):
-    chart = alt.Chart(data.cars.url).mark_point().encode(
-        x='Horsepower:Q',
-        y='Miles_per_Gallon:Q',
-        color='Origin:N'
-    ).interactive()
-    return (chart, '')
+def draw_basic(df, paramDict):
+    x = paramDict['x']
+    y = paramDict['y']
+    graph_type = paramDict['type']
+    chart = eval('alt.Chart(df).mark_{}()'.format(graph_type))
+    chart = chart.encode(x=x, y=y).interactive()
+    return chart
+
+
+def draw_incremental(chart, paramDict):
+    pass
 
 
 def load(json_str):

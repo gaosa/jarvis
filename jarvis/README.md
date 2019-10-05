@@ -36,4 +36,4 @@ http://localhost:8000/1/
 Try typing some commands after `>`,
 and hit `Enter`! 
 
-Currently your command will be stored, and some fake results will be provided.
+Your command will be parsed and some results will be returned.
