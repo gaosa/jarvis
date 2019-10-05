@@ -2,6 +2,21 @@ from django.db import models
 
 # Create your models here.
 class Dialog(models.Model):
+    ''' Format:
+    {
+        'basic': {
+            'x': '<X-axis>',
+            'y': '<Y-axis>',
+            'type': '<Type of graph>'
+        },
+        'completed': [{...}, {...}, {...}, ...],
+        'current': {
+            '<Param-1>': '<Value-1>',
+            ...
+        }
+    }
+    '''
+    paramDictString = models.TextField(default='{}')
     def __str__(self):
         return str(self.id)
 
