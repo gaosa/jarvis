@@ -13,7 +13,7 @@ def draw_basic(df, paramDict):
 
 
 def draw_incremental(chart, paramDict):
-    pass
+    return chart
 
 
 def load(json_str):
