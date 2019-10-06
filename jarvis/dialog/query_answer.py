@@ -51,11 +51,32 @@ def _check_params(paramKeys, paramType):
     return missingParams
 
 
-def _update_param_dict(paramDict, newParams, stage):
-    '''Returns what parameter is missing if applicable
+def _check_params_exist(paramKeys, paramType):
+    '''Check whether at least one parameter for a specific param type is set.
+    For example, for paramType == 'basic', whether at least one of x, y, and type is set
     '''
-    if stage == 1:
-        # First stage
+    for key in requiredKeysDict[paramType]:
+        if key in paramKeys:
+            return True
+    return False
+
+
+def _update_param_dict_with_axis(paramDict, axisDict):
+    if 'basic' not in paramDict:
+        paramDict['basic'] = {}
+    for axis in axisDict:
+        if 'x' not in paramDict['basic']:
+            paramDict['basic']['x'] = axis
+        elif 'y' not in paramDict['basic']:
+            paramDict['basic']['y'] = axis
+        else:
+            break
+
+
+def _update_param_dict(paramDict, newParams):
+    '''Returns the current stage, and what parameter is missing if applicable
+    '''
+    if _check_params_exist(newParams.keys(), 'basic'):
         if 'completed' in paramDict:
             del paramDict['completed']
         if 'current' in paramDict:
@@ -63,16 +84,23 @@ def _update_param_dict(paramDict, newParams, stage):
         if 'basic' not in paramDict:
             paramDict['basic'] = {}
         for key in newParams:
-            paramDict['basic'][key] = newParams[key]
-        return _check_params(paramDict['basic'].keys(), 'basic')
+            paramDict['basic'][key] = newParams[key][0]
+        # Use axis parameter to fill x and y
+        if 'axis' in newParams:
+            _update_param_dict_with_axis(paramDict, newParams['axis'])
+        return (1, _check_params(paramDict['basic'].keys(), 'basic'))
     else:
         # Second stage
         if 'basic' not in paramDict:
-            return _check_params([], 'basic')
-        if len(paramDict['basic']) != len(requiredKeysDict['basic']):
-            return _check_params(paramDict['basic'].keys(), 'basic')
+            if 'axis' in newParams:
+                _update_param_dict_with_axis(paramDict, newParams['axis'])
+            return (1, _check_params([], 'basic'))
+        if len(paramDict['basic'].keys()) != len(requiredKeysDict['basic']):
+            if 'axis' in newParams:
+                _update_param_dict_with_axis(paramDict, newParams['axis'])
+            return (1, _check_params(paramDict['basic'].keys(), 'basic'))
         # Basic parameters are good
-        return []
+        return (2, [])
 
 
 def _query_for_missing_params(missingParams):
@@ -83,8 +111,8 @@ def handle_command(dialog_id, command):
     MH.append_command(dialog_id, command)
     df, colNames, graph, paramDict = _get(dialog_id)
     # Recognize...
-    stage, newParams = P.parse(colNames, command)
-    missingParams = _update_param_dict(paramDict, newParams, stage)
+    newParams = P.parse(colNames, command)
+    stage, missingParams = _update_param_dict(paramDict, newParams)
     if len(missingParams) != 0:
         MH.append_query(dialog_id, _query_for_missing_params(missingParams))
     else:
