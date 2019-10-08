@@ -1,4 +1,4 @@
-## Encoding
+[selected gallery examples](https://docs.google.com/document/d/11TiIC41BxoeQfZMN-uCo1LpNsd38Ze_pj6uGVf7RpUs/edit)
 
 ### Encoding Data Types
 |Data Type|Shorthand Code|Description|
@@ -43,7 +43,7 @@ The `X` and `Y` encodings accept the following options:
 |opacity|`number`|The overall opacity (value between [0,1]).|
 |point|`boolean`|A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.|
 
-## Data Transofrmations
+## Data Transformations
 ### Aggregate Transforms
 |Operation|Description|
 |-|-|
