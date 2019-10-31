@@ -4,7 +4,8 @@ from django.shortcuts import render
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from . import model_helper as MH
-from . import query_answer as QA
+from . import query_answer_new as QA
+from . import test_prepare as TP
 import json as JSON
 import pandas as pd
 
@@ -19,20 +20,24 @@ def index(request):
         })
     else:
         df = None
-        f = request.FILES['fileName']
-        default_storage.save(f.name, f)
-        try:
-            df = pd.read_csv(default_storage.path(f.name))
-        except Exception as e:
+        if 'fileName' in request.FILES:
+            f = request.FILES['fileName']
+            default_storage.save(f.name, f)
+            try:
+                df = pd.read_csv(default_storage.path(f.name))
+            except Exception as e:
+                return JsonResponse({
+                    'msg': str(e)
+                })
+            dialog_id = MH.create_dialog()
+            df.to_pickle(default_storage.path(str(dialog_id)))
+            MH.append_query(dialog_id, 'Hi there! What can I do for you?')
             return JsonResponse({
-                'msg': str(e)
+                'url': str(dialog_id)
             })
-        dialog_id = MH.create_dialog()
-        df.to_pickle(default_storage.path(str(dialog_id)))
-        MH.append_query(dialog_id, 'Hi there! What can I do for you?')
-        return JsonResponse({
-            'url': str(dialog_id)
-        })
+        else:
+            k, v = TP.prepare(request)
+            return JsonResponse({k: v}) 
 
 
 @csrf_exempt

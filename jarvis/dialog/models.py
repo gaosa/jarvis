@@ -17,10 +17,15 @@ class Dialog(models.Model):
     }
     '''
     paramDictString = models.TextField(default='{}')
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+    predicate = models.TextField(default='')
     def __str__(self):
         return str(self.id)
 
 class Record(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     dialog = models.ForeignKey(Dialog, on_delete=models.CASCADE)
     RECORD_TYPES = [
         ('Q', 'Question'),
