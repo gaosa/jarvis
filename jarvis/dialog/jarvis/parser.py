@@ -84,6 +84,8 @@ class Parser:
             'decrease': 'decrease',
             'lighter': 'decrease',
             'darker': 'increase',
+            'lower': 'decrease',
+            'higher': 'increase',
             # Graph Size Keywords
             'height': 'height',
             'width': 'width',
@@ -589,4 +591,3 @@ class Parser:
         kvs = self.__gen1(matches)
         print('Commands: ', kvs)
         return kvs
-        
