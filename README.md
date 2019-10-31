@@ -14,6 +14,7 @@ and outputs graphs in an interactive fashion.
 
 - [ ] User should be able to append new commands.
 - [ ] Set up a server to serve the website.
+- [ ] Connect to Dialogflow agent to parse chart type
 
 # Documents
 
