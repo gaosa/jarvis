@@ -62,7 +62,7 @@ class Parser:
             'color': 'color',
             # Show point/line or not values
             #'with': 'True',
-            'show': 'True',
+            #'show': 'True',
             'add': 'True',
             'without': 'False',
             'do not': 'False',
@@ -393,7 +393,7 @@ class Parser:
         if n not in self.col_names:
             return
         stat = self.col_names[n]
-        if stat[0] == 'int64' or stat[0] == np.dtype('<M8[ns]') and stat[1] <= 20:
+        if (stat[0] == 'int64' or stat[0] == np.dtype('<M8[ns]')) and stat[1] <= 15:
             context['type'] = 'O'
     
     
