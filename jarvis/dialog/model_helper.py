@@ -23,6 +23,10 @@ def append_command(dialog_id, command):
     Record.objects.create(dialog=Dialog.objects.get(id=dialog_id), record_type='A', content=command)
 
 
+def get_commands(dialog_id):
+    return [r.content for r in Record.objects.filter(dialog__id=dialog_id, record_type='A')]
+
+
 def append_query(dialog_id, query):
     Record.objects.create(dialog=Dialog.objects.get(id=dialog_id), record_type='Q', content=query)
 
@@ -55,3 +59,13 @@ def set_param_dict(dialog_id, paramDict):
     dialog = Dialog.objects.get(id=dialog_id)
     dialog.paramDictString = JSON.dumps(paramDict)
     dialog.save()
+
+
+def get_predicate(dialog_id):
+    return Dialog.objects.get(id=dialog_id).predicate
+
+
+def set_predicate(dialog_id, predicate):
+    d = Dialog.objects.get(id=dialog_id)
+    d.predicate = predicate
+    d.save()

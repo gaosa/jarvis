@@ -13,6 +13,10 @@
     <img src="{% static "dialog/img/logo.svg" %}" alt="Logo" />
     <input type="file" name="fileName" @change="upload($event.target.name, $event.target.files)"/>
     <br />
+    <div v-for="test in tests">
+        <input type="button" :name="test" :value="test" @click="upload($event.target.name)"/>
+        <br />
+    </div>
     <p style="color: red">[[ msg ]]</p>
 </div>
 
