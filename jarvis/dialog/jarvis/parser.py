@@ -40,6 +40,7 @@ class Parser:
             "point graph": "point",
             'color graph': 'rect',
             'color chart': 'rect',
+            'color map': 'rect',
             "points": "point",  # Can either be point chart or show point or not
             "point": "point",  # Can either be point chart or show point or not
             "heatmap": "rect",
@@ -74,8 +75,10 @@ class Parser:
             'natural': 'False',
             'none': 'False',
             # Mark opacity key
-            'transparency': 'opacity',
+            'transparency': 'opacity-reverse',
+            'translucent': 'opacity-reverse',
             'opacity': 'opacity',
+            'opaque': 'opacity',
             # Keywords to increase or reduce the opacity, marker size, height, width, size
             'increase': 'increase',
             'reduce': 'decrease',
@@ -89,6 +92,8 @@ class Parser:
             'darker': 'increase',
             'lower': 'decrease',
             'higher': 'increase',
+            'more': 'increase',
+            'less': 'decrease',
             # Graph Size Keywords
             'height': 'height',
             'width': 'width',
@@ -484,11 +489,23 @@ class Parser:
         if i == len(matches):
             return
         match = matches[i]
-        if match in ['increase', 'decrease'] and i + 1 < len(matches) and matches[i + 1] == 'opacity':
+        if match in ['increase', 'decrease'] and i + 1 < len(matches) and matches[i + 1] in ['opacity', 'opacity-reverse']:
             i += 2
-            context['res'].append(('opacity', match))
-        elif match == 'opacity' and i + 1 < len(matches) and matches[i + 1] in ['increase', 'decrease']:
-            context['res'].append(('opacity', matches[i + 1]))
+            if matches[i - 1] == 'opacity':
+                context['res'].append(('opacity', match))
+            else:
+                if match == 'increase':
+                    context['res'].append(('opacity', 'decrease'))
+                else:
+                    context['res'].append(('opacity', 'increase'))
+        elif match in ['opacity', 'opacity-reverse'] and i + 1 < len(matches) and matches[i + 1] in ['increase', 'decrease']:
+            if match == 'opacity':
+                context['res'].append(('opacity', matches[i + 1]))
+            else:
+                if matches[i + 1] == 'increase':
+                    context['res'].append(('opacity', 'decrease'))
+                else:
+                    context['res'].append(('opacity', 'increase'))
             i += 2
         context['i'] = i
         
