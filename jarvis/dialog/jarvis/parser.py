@@ -1,5 +1,6 @@
 import re
 import numpy as np
+from . import ml_parser as mlp
 
 
 class Parser:
@@ -599,6 +600,7 @@ class Parser:
     
     
     def parse(self, command):
+        ml_type = mlp.get_type(command)
         command = command.lower()
         self.cur_command = command
         command = ' '.join(re.findall(r"[\w']+", command)) + ' '
@@ -609,5 +611,13 @@ class Parser:
             match, command = self.__find_next_match(command)
         print('Matched keywords: ', matches)
         kvs = self.__gen1(matches)
+        if ml_type:
+            has_type = False
+            for kv in kvs:
+                if kv[0] == 'val':
+                    has_type = True
+                    break
+            if not has_type:
+                kvs.append(('val', ml_type))
         print('Commands: ', kvs)
         return kvs
