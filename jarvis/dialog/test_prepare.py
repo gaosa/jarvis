@@ -25,14 +25,16 @@ tests = {
         ('Q', 'Welcome to Jarvis!'),
         ('G', alt.Chart(data.cars()).mark_circle(opacity=0.9).encode(x='Horsepower',y='Miles_per_Gallon').to_json()),
         ('Q', 'Can you draw the above graph with natural language?'),
+        2
     ],
     'test1-2': [
         data.cars(),
         ('Q', 'Welcome to Jarvis!'),
         ('G', alt.Chart(data.cars()).mark_circle(opacity=0.9).encode(x='Horsepower',y='Miles_per_Gallon').to_json()),
-        ('G', alt.Chart(data.cars()).mark_circle(opacity=0.5).encode(x='Horsepower',y='Miles_per_Gallon').to_json()),
+        ('G', alt.Chart(data.cars()).mark_circle(opacity=0.9-0.2-0.2).encode(x='Horsepower',y='Miles_per_Gallon').to_json()),
         ('Q', 'Can you convert from the upper graph to the lower graph?'),
-        ('P', 'scatterplot miles per gallon by horsepower')
+        ('P', 'scatterplot miles per gallon by horsepower'),
+        3
     ],
     'test1-3': [
         data.cars(),
@@ -40,13 +42,15 @@ tests = {
         ('G', alt.Chart(data.cars()).mark_circle(opacity=0.9).encode(x='Horsepower',y='Miles_per_Gallon').to_json()),
         ('G', alt.Chart(data.cars()).mark_circle(opacity=0.9).encode(x='Horsepower',y='Miles_per_Gallon',color='Origin').to_json()),
         ('Q', 'Can you convert from the upper graph to the lower graph?'),
-        ('P', 'scatterplot miles per gallon by horsepower')
+        ('P', 'scatterplot miles per gallon by horsepower'),
+        3
     ],
     'test2-1': [
         src1,
         ('Q', 'Welcome to Jarvis!'),
         ('G', alt.Chart(src1).mark_bar(opacity=0.9).encode(x='project',y='score').to_json()),
         ('Q', 'Can you draw the above graph with natural language?'),
+        2
     ],
     'test2-2': [
         src1,
@@ -54,7 +58,8 @@ tests = {
         ('G', alt.Chart(src1).mark_bar(opacity=0.9).encode(x='project',y='score').to_json()),
         ('G', alt.Chart(src1).mark_bar(opacity=0.9).encode(x='project',y='score',tooltip=['score']).to_json()),
         ('Q', 'Can you convert from the upper graph to the lower graph? (Please move over the second graph)'),
-        ('P', 'bar chart score by project')
+        ('P', 'bar chart score by project'),
+        3
     ],
     'test2-3': [
         src1,
@@ -62,50 +67,54 @@ tests = {
         ('G', alt.Chart(src1).mark_bar(opacity=0.9).encode(x='project',y='score').to_json()),
         ('G', alt.Chart(src1).mark_bar(opacity=0.9,color='red').encode(x='project',y='score').to_json()),
         ('Q', 'Can you convert from the upper graph to the lower graph?'),
-        ('P', 'bar chart score by project')
+        ('P', 'bar chart score by project'),
+        3
     ],
     'test3-1': [
         src2,
         ('Q', 'Welcome to Jarvis!'),
-        ('G', alt.Chart(src2).mark_rect().encode(
+        ('G', alt.Chart(src2).mark_rect(opacity=0.9).encode(
             x='a:O',
             y='b:O',
             color='c:Q'
         ).to_json()),
         ('Q', 'Can you draw the above graph with natural language?'),
+        2
     ],
     'test3-2': [
         src2,
         ('Q', 'Welcome to Jarvis!'),
-        ('G', alt.Chart(src2).mark_rect().encode(
+        ('G', alt.Chart(src2).mark_rect(opacity=0.9).encode(
             x='a:O',
             y='b:O',
             color='c:Q'
         ).to_json()),
-        ('G', alt.Chart(src2).mark_circle().encode(
+        ('G', alt.Chart(src2).mark_circle(opacity=0.9).encode(
             x='a:O',
             y='b:O',
             size='c:Q',
             color='c:Q'
         ).to_json()),
         ('Q', 'Can you convert from the upper graph to the lower graph?'),
-        ('P', 'rectangle x is a y is b color is c')
+        ('P', 'rectangle x is a y is b color is c'),
+        3
     ],
     'test3-3': [
         src2,
         ('Q', 'Welcome to Jarvis!'),
-        ('G', alt.Chart(src2).mark_rect().encode(
+        ('G', alt.Chart(src2).mark_rect(opacity=0.9).encode(
             x='a:O',
             y='b:O',
             color='c:Q'
         ).to_json()),
-        ('G', alt.Chart(src2).mark_rect().encode(
+        ('G', alt.Chart(src2).mark_rect(opacity=0.9).encode(
             x='a:O',
             y='b:O',
             color='c:Q'
         ).properties(width=400*1.2, height=300*1.2).to_json()),
         ('Q', 'Can you convert from the upper graph to the lower graph?'),
-        ('P', 'rectangle x is a y is b color is c')
+        ('P', 'rectangle x is a y is b color is c'),
+        3
     ],
 }
 
@@ -118,14 +127,16 @@ def prepare(request):
     testName = keys[0]
     if testName in tests:
         dialog_id = MH.create_dialog()
-        tests[testName][0].to_pickle(default_storage.path(str(dialog_id)))
-        for r in tests[testName][1:]:
+        ls = tests[testName]
+        ls[0].to_pickle(default_storage.path(str(dialog_id)))
+        for r in ls[1:-1]:
             if r[0] == 'Q':
                 MH.append_query(dialog_id, r[1])
             elif r[0] == 'G':
                 MH.append_graph(dialog_id, r[1])
             elif r[0] == 'P':
                 MH.set_predicate(dialog_id, r[1])
+        MH.set_target_graph_json(dialog_id, ls[ls[-1]][1])
         return 'url', str(dialog_id)
     
     return 'msg', 'Invalid request'
