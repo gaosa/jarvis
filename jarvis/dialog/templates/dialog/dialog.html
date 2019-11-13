@@ -15,7 +15,7 @@
 <div class="container" id="app">
     <img src="{% static "dialog/img/logo.svg" %}" alt="Logo" />
     <div v-for="r in records">
-        <div v-if="r[0] === 'Q'"><p><b>[[ r[1] ]]</b></p></div>
+        <div v-if="r[0] === 'Q'"><p><b><pre>[[ r[1] ]]</pre></b></p></div>
         <div v-else-if="r[0] === 'A'"><p>[[ r[1] ]]</p></div>
         <div v-else v-bind:id="r[2]"></div>
     </div>

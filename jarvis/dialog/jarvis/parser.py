@@ -38,6 +38,8 @@ class Parser:
             "lines": "line",  # Can either be line chart or show line or not 
             "point chart": "point",
             "point graph": "point",
+            'color graph': 'rect',
+            'color chart': 'rect',
             "points": "point",  # Can either be point chart or show point or not
             "point": "point",  # Can either be point chart or show point or not
             "heatmap": "rect",
@@ -72,6 +74,7 @@ class Parser:
             'natural': 'False',
             'none': 'False',
             # Mark opacity key
+            'transparency': 'opacity',
             'opacity': 'opacity',
             # Keywords to increase or reduce the opacity, marker size, height, width, size
             'increase': 'increase',
@@ -566,12 +569,12 @@ class Parser:
         }
         while context['i'] < len(matches):
             prev_i = context['i']
+            self.__check_graph_size(matches, context)
             self.__check_chart_type(matches, context)
             self.__check_opacity(matches, context)
             self.__check_color(matches, context)
             self.__check_channel(matches, context)
             self.__check_tooltip(matches, context)
-            self.__check_graph_size(matches, context)
             self.__check_graph_title(matches, context)
             if prev_i == context['i']:
                 context['i'] += 1
