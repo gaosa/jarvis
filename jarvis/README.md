@@ -11,6 +11,8 @@ cd jarvis/jarvis
 
 # 3. Set up database
 python manage.py migrate
+
+# 4. Move Dialogflow credentials to credentials/dialogflow.json
 ```
 
 # To play with some mock data
