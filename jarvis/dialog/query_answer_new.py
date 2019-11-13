@@ -2,6 +2,7 @@ from . import model_helper as MH
 from django.core.files.storage import default_storage
 import pandas as pd
 from .jarvis.jarvis import Jarvis
+import json
 
 
 '''
@@ -47,6 +48,15 @@ def __is_draw_command(command):
     return command.lower() not in ['undo', 'reset', 'sample']
 
 
+def __is_graph_equal_to_target(dialog_id, json_str):
+    target = MH.get_target_graph_json(dialog_id)
+    dic1 = json.loads(json_str)
+    dic2 = json.loads(target)
+    for k in dic1:
+        if dic1[k] != dic2[k]:
+            print(k, dic1[k], dic2[k])
+    return target != '' and json.loads(json_str) == json.loads(target)
+
 def handle_command(dialog_id, command):
     j, cmds = __get(dialog_id)
     MH.append_command(dialog_id, command)
@@ -58,6 +68,8 @@ def handle_command(dialog_id, command):
         if success:
             MH.append_query(dialog_id, 'Here is the graph I generated...')
             MH.append_graph(dialog_id, j.get().to_json())
+            if __is_graph_equal_to_target(dialog_id, j.get().to_json()):
+                MH.append_query(dialog_id, 'Congratulations! You have generated the target graph.')
             MH.append_query(dialog_id, 'What else would you like to do?')
     else:
         command = command.lower()
@@ -78,4 +90,6 @@ def handle_command(dialog_id, command):
         elif command == 'sample':
             MH.append_query(dialog_id, 'Here are samples of the data...')
             MH.append_query(dialog_id, str(pd.read_pickle(default_storage.path(str(dialog_id))).sample(n=5, random_state=1)))
+        if __is_graph_equal_to_target(dialog_id, j.get().to_json()):
+            MH.append_query(dialog_id, 'Congratulations! You have generated the target graph.')
         MH.append_query(dialog_id, 'What else would you like to do?')

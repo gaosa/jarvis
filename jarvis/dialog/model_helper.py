@@ -69,3 +69,11 @@ def set_predicate(dialog_id, predicate):
     d = Dialog.objects.get(id=dialog_id)
     d.predicate = predicate
     d.save()
+
+def set_target_graph_json(dialog_id, json_str):
+    d = Dialog.objects.get(id=dialog_id)
+    d.target = json_str
+    d.save()
+
+def get_target_graph_json(dialog_id):
+    return Dialog.objects.get(id=dialog_id).target
