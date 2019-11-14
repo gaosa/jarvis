@@ -50,12 +50,14 @@ def __is_draw_command(command):
 
 def __is_graph_equal_to_target(dialog_id, json_str):
     target = MH.get_target_graph_json(dialog_id)
+    if target == '':
+        return False
     dic1 = json.loads(json_str)
     dic2 = json.loads(target)
     for k in dic1:
         if dic1[k] != dic2[k]:
             print(k, dic1[k], dic2[k])
-    return target != '' and json.loads(json_str) == json.loads(target)
+    return json.loads(json_str) == json.loads(target)
 
 def handle_command(dialog_id, command):
     j, cmds = __get(dialog_id)
