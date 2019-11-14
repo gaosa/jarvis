@@ -22,9 +22,9 @@ def index(request):
         df = None
         if 'fileName' in request.FILES:
             f = request.FILES['fileName']
-            default_storage.save(f.name, f)
+            fname = default_storage.save(f.name, f)
             try:
-                df = pd.read_csv(default_storage.path(f.name))
+                df = pd.read_csv(default_storage.path(fname))
             except Exception as e:
                 return JsonResponse({
                     'msg': str(e)
