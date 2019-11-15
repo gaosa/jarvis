@@ -37,13 +37,14 @@ class Parser:
             'histogram': 'bar',
             "line": "line",  # Can either be line chart or show line or not
             "lines": "line",  # Can either be line chart or show line or not 
-            "point chart": "point",
-            "point graph": "point",
+            "point chart": "circle",
+            "point graph": "circle",
             'color graph': 'rect',
             'color chart': 'rect',
             'color map': 'rect',
-            "points": "point",  # Can either be point chart or show point or not
-            "point": "point",  # Can either be point chart or show point or not
+            '2d relationship': 'rect',
+            "points": "circle",  # Can either be point chart or show point or not
+            "point": "circle",  # Can either be point chart or show point or not
             "heatmap": "rect",
             "heat map": "rect",
             "area": "area",
@@ -64,6 +65,7 @@ class Parser:
             'group by': 'column',
             'row': 'row',
             'color': 'color',
+            'colour': 'color',
             # Show point/line or not values
             #'with': 'True',
             #'show': 'True',
@@ -77,6 +79,7 @@ class Parser:
             'none': 'False',
             # Mark opacity key
             'transparency': 'opacity-reverse',
+            'transparent': 'opacity-reverse',
             'translucent': 'opacity-reverse',
             'opacity': 'opacity',
             'opaque': 'opacity',
@@ -95,6 +98,9 @@ class Parser:
             'higher': 'increase',
             'more': 'increase',
             'less': 'decrease',
+            'longer': 'increase',
+            'shorter': 'decrease',
+            'wider': 'increase',
             # Graph Size Keywords
             'height': 'height',
             'width': 'width',
