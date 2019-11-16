@@ -50,11 +50,11 @@ class Axis:
         return None
     def update(self, k, v):
         if k in set(['val', 'type', 'transform']):
-            if k == 'val':
-                if 'type' in self.params:
-                    del self.params['type']
-                if 'transform' in self.params:
-                    del self.params['transform']
+            # if k == 'val':
+            #     if 'type' in self.params:
+            #         del self.params['type']
+            #     if 'transform' in self.params:
+            #         del self.params['transform']
             self.params[k] = v
         elif k in set(['bin', 'title', 'stack', 'axis']):
             self.params['config'][k] = v
