@@ -134,6 +134,7 @@ class Parser:
             # Set tooltip
             'tooltip': 'tooltip',
             'tool tip': 'tooltip',
+            'label': 'tooltip',
         }
         for n in col_names:
             self.keywords[n.lower()] = n
