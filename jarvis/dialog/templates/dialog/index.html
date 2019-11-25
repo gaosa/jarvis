@@ -11,8 +11,13 @@
 
 <div class="container" id="app">
     <img src="{% static "dialog/img/logo.svg" %}" alt="Logo" />
+    <p><b>Survey instructions can be found <a href='https://docs.google.com/document/d/1JmPYo8jRJI2JwJQeJuRu3wRL_SXFVQcbwFzlLLVJ1ww/edit' target="black">here</a>.</b></p>
+    <br />
+    <p><b>For open-ended exploration:</b></p>
     <input type="file" name="fileName" @change="upload($event.target.name, $event.target.files)"/>
     <br />
+    <br />
+    <p><b>For survey questions:</b></p>
     <div v-for="test in tests">
         <input type="button" :name="test" :value="test" @click="upload($event.target.name)"/>
         <br />
